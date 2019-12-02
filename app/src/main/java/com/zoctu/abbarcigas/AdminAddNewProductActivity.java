@@ -3,12 +3,18 @@ package com.zoctu.abbarcigas;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,12 +42,15 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private Button AddNewProductButton;
     private ImageView InputProductImage;
     private EditText InputProductname,InputProductDescription,InputProductPrice;
-    private static final int GalleryPick=10;
+    private static final int GalleryPick=1000;
+    private static final int PermissionPick=1001;
     private Uri ImageUri;
     private String productRandomKey, downloadImageUrl;
     private StorageReference ProductImageRef;
     private DatabaseReference ProductRef;
     private ProgressDialog loadingBar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +58,41 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_add_new_product);
 
 
-        categoryName=getIntent().getExtras().get("category").toString();
+        categoryName = getIntent().getExtras().get("category").toString();
         Toast.makeText(this, categoryName, Toast.LENGTH_LONG).show();
-        ProductImageRef= FirebaseStorage.getInstance().getReference().child("Product Images");
-        ProductRef=FirebaseDatabase.getInstance().getReference().child("Products");
+        ProductImageRef = FirebaseStorage.getInstance().getReference().child("Product Images");
+        ProductRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
 
-        AddNewProductButton=findViewById(R.id.add_new_product);
-        InputProductname=findViewById(R.id.product_name);
-        InputProductDescription=findViewById(R.id.product_description);
-        InputProductPrice=findViewById(R.id.product_price);
-        InputProductImage=findViewById(R.id.select_product_image);
-        loadingBar=new ProgressDialog(this);
+        AddNewProductButton = findViewById(R.id.add_new_product);
+        InputProductname = findViewById(R.id.product_name);
+        InputProductDescription = findViewById(R.id.product_description);
+        InputProductPrice = findViewById(R.id.product_price);
+        InputProductImage = findViewById(R.id.select_product_image);
+        loadingBar = new ProgressDialog(this);
 
 
         InputProductImage.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                OpenGallery();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_DENIED) {
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PermissionPick);
+                    } else {
+                        pickImageFromGallery();
+                    }
+                } else {
+                    pickImageFromGallery();
+
+                }
             }
         });
+
+
         AddNewProductButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -80,21 +103,38 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
     }
 
-    private void OpenGallery() {
-        Intent galleryIntent=new Intent();
-        galleryIntent.setAction(Intent.ACTION_PICK);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent,GalleryPick);
+    private void pickImageFromGallery() {
+        Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("jpeg/*");
+        startActivityForResult(intent, GalleryPick);
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PermissionPick:{
+                if (grantResults.length >0 && grantResults[0] ==
+                PackageManager.PERMISSION_GRANTED){
+                    pickImageFromGallery();
+                }
+
+                else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==GalleryPick  && resultCode==RESULT_OK  &&  data!=null){
-
+        if (resultCode==RESULT_OK && requestCode==GalleryPick){
             ImageUri=data.getData();
             InputProductImage.setImageURI(ImageUri);
+
         }
     }
 
@@ -135,10 +175,10 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         SimpleDateFormat currentTime=new SimpleDateFormat("HH:mm:ss a");
         saveCurrentTime=currentTime.format(calendar.getTime());
 
-        productRandomKey=saveCurrentDate + saveCurrentTime;
+        productRandomKey = saveCurrentDate + saveCurrentTime;
 
 
-        final StorageReference filePath=ProductImageRef.child(ImageUri.getLastPathSegment() + productRandomKey + ".jpg");
+        final StorageReference filePath=ProductImageRef.child(ImageUri.getLastPathSegment() + productRandomKey + ".jpeg/.png/.jpg");
 
         final UploadTask uploadTask=filePath.putFile(ImageUri);
 
@@ -198,6 +238,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
 
                             Intent intent=new Intent(AdminAddNewProductActivity.this,AdminCategoryActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
 
                             loadingBar.dismiss();
@@ -211,8 +252,12 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                             Toast.makeText(AdminAddNewProductActivity.this, "Error: " + message, Toast.LENGTH_LONG).show();
                         }
 
+
                     }
+
                 });
     }
 
 }
+
+
