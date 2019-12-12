@@ -93,8 +93,10 @@ public class HomeActivity extends AppCompatActivity {
         CircleImageView profileImageView=headerView.findViewById(R.id.user_profile_image);
 
         userNameTextView.setText(Prevalent.currentOnlineUsers.getName());
+        Picasso.get().load(Prevalent.currentOnlineUsers.getImage()).placeholder(R.drawable.profile).into(profileImageView);
+
         recyclerView=findViewById(R.id.recycler_menu);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -110,20 +112,22 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
                 if (destination.getId() == R.id.nav_cart) {
-                    Toast.makeText(HomeActivity.this, "Clicked Cart", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Cart", Toast.LENGTH_SHORT).show();
                 }
                 if (destination.getId() == R.id.nav_order) {
-                    Toast.makeText(HomeActivity.this, "Clicked Order", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Order", Toast.LENGTH_SHORT).show();
                 }
                 if (destination.getId() == R.id.nav_categories) {
-                    Toast.makeText(HomeActivity.this, "Clicked Categories", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Categories", Toast.LENGTH_SHORT).show();
                 }
                 if (destination.getId() == R.id.nav_settings) {
-                    Toast.makeText(HomeActivity.this, "Clicked Settings", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(HomeActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(HomeActivity.this, "Settings", Toast.LENGTH_SHORT).show();
                 }
                 if (destination.getId() == R.id.nav_logout
                 ) {
-                    Toast.makeText(HomeActivity.this, "Clicked Logout", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

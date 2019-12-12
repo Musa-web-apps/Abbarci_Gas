@@ -43,14 +43,11 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private ImageView InputProductImage;
     private EditText InputProductname,InputProductDescription,InputProductPrice;
     private static final int GalleryPick=1000;
-    private static final int PermissionPick=1001;
     private Uri ImageUri;
     private String productRandomKey, downloadImageUrl;
     private StorageReference ProductImageRef;
     private DatabaseReference ProductRef;
     private ProgressDialog loadingBar;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,67 +73,37 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                OpenGallery();
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_DENIED) {
-                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                        requestPermissions(permissions, PermissionPick);
-                    } else {
-                        pickImageFromGallery();
-                    }
-                } else {
-                    pickImageFromGallery();
 
-                }
             }
         });
 
-
         AddNewProductButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 ValidateProductData();
             }
         });
-
     }
-
-    private void pickImageFromGallery() {
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("jpeg/*");
-        startActivityForResult(intent, GalleryPick);
-
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PermissionPick:{
-                if (grantResults.length >0 && grantResults[0] ==
-                PackageManager.PERMISSION_GRANTED){
-                    pickImageFromGallery();
-                }
-
-                else {
-                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
-                }
-            }
+        private void OpenGallery() {
+            Intent galleryIntent=new Intent();
+            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent, GalleryPick);
         }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode==RESULT_OK && requestCode==GalleryPick){
+        if (requestCode==GalleryPick && resultCode==RESULT_OK && data!=null){
+
             ImageUri=data.getData();
             InputProductImage.setImageURI(ImageUri);
-
-        }
     }
+
+}
 
     private void ValidateProductData(){
         Description=InputProductDescription.getText().toString();
@@ -182,7 +149,8 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
         final UploadTask uploadTask=filePath.putFile(ImageUri);
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        uploadTask.addOnFailureListener(new OnFailureListener()
+        {
             @Override
             public void onFailure(@NonNull Exception e) {
 
@@ -191,7 +159,8 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                 loadingBar.dismiss();
 
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+        {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
@@ -206,11 +175,13 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                         downloadImageUrl=filePath.getDownloadUrl().toString();
                         return filePath.getDownloadUrl();
                     }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                }).addOnCompleteListener(new OnCompleteListener<Uri>()
+                {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful())
                         {
+                            downloadImageUrl=task.getResult().toString();
 
                             saveProductInfoToDataBase();
                         }
@@ -232,9 +203,11 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         productMap.put("pname", Pname);
 
         ProductRef.child(productRandomKey).updateChildren(productMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
                         if (task.isSuccessful()){
 
                             Intent intent=new Intent(AdminAddNewProductActivity.this,AdminCategoryActivity.class);
@@ -255,9 +228,11 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
                     }
 
-                });
+                 });
     }
 
 }
+
+
 
 

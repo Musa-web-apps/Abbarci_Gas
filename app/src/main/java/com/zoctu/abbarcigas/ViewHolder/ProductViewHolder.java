@@ -14,7 +14,7 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
 
     public TextView txtProductName,txtProductDescription, txtProductPrice;
     public ImageView imageView;
-    public ItemClickListner listner;
+    public ItemClickListner listener;
 
     public ProductViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,12 +24,14 @@ public class ProductViewHolder extends RecyclerView.ViewHolder implements View.O
         txtProductDescription=itemView.findViewById(R.id.product_description);
         txtProductPrice=itemView.findViewById(R.id.product_price);
     }
-    public void setItemClickListner(ItemClickListner listner){
-        this.listner=listner;
+    public void setItemClickListener(ItemClickListner listener)
+    {
+        this.listener=listener;
     }
 
     @Override
-    public void onClick(View v) {
-        listner.onClick(v,getAdapterPosition(),false);
+    public void onClick(View v)
+    {
+        listener.onClick(v,getAdapterPosition(),false);
     }
 }
