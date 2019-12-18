@@ -230,6 +230,11 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
                  });
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(AdminAddNewProductActivity.this,AdminCategoryActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);}
 
 }
 

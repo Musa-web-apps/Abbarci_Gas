@@ -38,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
     private CircleImageView profileImageView;
-    private EditText fullNameEditText,userPhoneEditText, addressEditText,passwordEditText;
+    private EditText fullNameEditText,userPhoneEditText, addressEditText;
     private TextView profileChangeTextBtn,closeTextBtn,saveTextButton;
 
     private Uri imageUri;
@@ -62,22 +62,23 @@ public class SettingsActivity extends AppCompatActivity {
         profileChangeTextBtn=findViewById(R.id.profile_image_change);
         closeTextBtn=findViewById(R.id.close_settings_btn);
         saveTextButton=findViewById(R.id.update_account_settings_btn);
-        passwordEditText=findViewById(R.id.settings_password);
 
 
 
         userInfoDisplay(profileImageView,fullNameEditText,userPhoneEditText,addressEditText);
 
-        closeTextBtn.setOnClickListener(new View.OnClickListener() {
+        closeTextBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this,MainActivity.class));
+                startActivity(new Intent(SettingsActivity.this,HomeActivity.class));
                 finish();
             }
         });
 
 
-        saveTextButton.setOnClickListener(new View.OnClickListener() {
+        saveTextButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 if (checker.equals("clicked")){
@@ -89,11 +90,12 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        profileChangeTextBtn.setOnClickListener(new View.OnClickListener() {
+        profileChangeTextBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
-                checker="clicked";
+                checker = "clicked";
 
                 CropImage.activity(imageUri)
                         .setAspectRatio(1,1)
@@ -111,35 +113,34 @@ public class SettingsActivity extends AppCompatActivity {
         userMap.put("name", fullNameEditText.getText().toString());
         userMap.put("address", addressEditText.getText().toString());
         userMap.put("phoneOrder", userPhoneEditText.getText().toString());
-        userMap.put("password", passwordEditText.getText().toString());
         ref.child(Prevalent.currentOnlineUsers.getPhone()).updateChildren(userMap);
 
 
-        startActivity(new Intent(SettingsActivity.this,MainActivity.class));
+        Intent intent=new Intent(SettingsActivity.this,HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
         Toast.makeText(SettingsActivity.this, "Profile Info Updated Successfully....", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && requestCode==RESULT_OK && data!=null)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode==RESULT_OK)
         {
             CropImage.ActivityResult result=CropImage.getActivityResult(data);
-            imageUri=result.getUri();
+            imageUri = result.getUri();
 
             profileImageView.setImageURI(imageUri);
         }
-        else {
+        else
+            {
+                Toast.makeText(this, "Error, Try Again....", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
-            Toast.makeText(this, "Error, Try Again....", Toast.LENGTH_SHORT).show();
-
-
         }
     }
-
 
     private void userInfoSaved() {
 
@@ -165,7 +166,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void uploadImage()
     {
         final ProgressDialog progressDialog=new ProgressDialog(this);
-        progressDialog.setTitle("Update Profile");
+        progressDialog.setTitle("Updating Profile");
         progressDialog.setMessage("Please wait, while we are updating your account information....");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
@@ -174,10 +175,11 @@ public class SettingsActivity extends AppCompatActivity {
         if (imageUri !=null)
         {
             final StorageReference fileRef=storageProfilePictureRef
-                    .child(Prevalent.currentOnlineUsers.getPhone() + ".jpeg/png");
+                    .child(Prevalent.currentOnlineUsers.getPhone() + ".jpg");
 
             uploadTask=fileRef.putFile(imageUri);
-            uploadTask.continueWithTask(new Continuation() {
+            uploadTask.continueWithTask(new Continuation()
+            {
                 @Override
                 public Object then(@NonNull Task task) throws Exception
                 {
@@ -189,7 +191,8 @@ public class SettingsActivity extends AppCompatActivity {
                     return fileRef.getDownloadUrl();
                 }
             })
-            .addOnCompleteListener(new OnCompleteListener<Uri>() {
+            .addOnCompleteListener(new OnCompleteListener<Uri>()
+            {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task)
                 {
@@ -203,21 +206,23 @@ public class SettingsActivity extends AppCompatActivity {
                         userMap.put("name", fullNameEditText.getText().toString());
                         userMap.put("address", addressEditText.getText().toString());
                         userMap.put("phoneOrder", userPhoneEditText.getText().toString());
-                        userMap.put("password", passwordEditText.getText().toString());
                         userMap.put("image", myUrl);
                         ref.child(Prevalent.currentOnlineUsers.getPhone()).updateChildren(userMap);
 
-                        progressDialog.dismiss();
 
-                        startActivity(new Intent(SettingsActivity.this,MainActivity.class));
+                        progressDialog.dismiss();
+                        Intent intent=new Intent(SettingsActivity.this,HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         Toast.makeText(SettingsActivity.this, "Profile Info Updated Successfully....", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     else 
                     {
-                        progressDialog.dismiss();
+
                         Toast.makeText(SettingsActivity.this, "Error.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
                 }
             });
@@ -239,18 +244,16 @@ public class SettingsActivity extends AppCompatActivity {
                {
                    if (dataSnapshot.child("image").exists())
                    {
-                       String image=dataSnapshot.child("image").getValue().toString();
-                       String name=dataSnapshot.child("name").getValue().toString();
-                       String phone=dataSnapshot.child("phone").getValue().toString();
-                       String address=dataSnapshot.child("address").getValue().toString();
-                       String password=dataSnapshot.child("password").getValue().toString();
+                       String image = dataSnapshot.child("image").getValue().toString();
+                       String name = dataSnapshot.child("name").getValue().toString();
+                       String phone = dataSnapshot.child("phone").getValue().toString();
+                       String address = dataSnapshot.child("address").getValue().toString();
 
 
                        Picasso.get().load(image).into(profileImageView);
                        fullNameEditext.setText(name);
                        userPhoneEditText.setText(phone);
                        addressEditText.setText(address);
-                       passwordEditText.setText(password);
 
                    }
                }
