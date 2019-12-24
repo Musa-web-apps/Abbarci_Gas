@@ -65,11 +65,12 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent=new Intent(HomeActivity.this,CartActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -112,6 +113,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
                 if (destination.getId() == R.id.nav_cart) {
+                    Intent intent=new Intent(HomeActivity.this,CartActivity.class);
+                    startActivity(intent);
                     Toast.makeText(HomeActivity.this, "Cart", Toast.LENGTH_SHORT).show();
                 }
                 if (destination.getId() == R.id.nav_order) {
@@ -149,11 +152,22 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter=
                 new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
+                    protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
                         holder.txtProductName.setText(model.getPname());
                         holder.txtProductDescription.setText(model.getDescription());
                         holder.txtProductPrice.setText("Price = " + model.getPrice() + " Ushs");
                         Picasso.get().load(model.getImage()).into(holder.imageView);
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                             Intent intent=new Intent(HomeActivity.this,ProductDetailsActivity.class);
+                             intent.putExtra("pid",model.getPid());
+                             startActivity(intent);
+                            }
+                        });
+
                     }
 
                     @NonNull
