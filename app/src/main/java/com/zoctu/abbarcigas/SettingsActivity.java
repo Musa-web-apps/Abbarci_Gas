@@ -212,7 +212,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                         progressDialog.dismiss();
                         Intent intent=new Intent(SettingsActivity.this,HomeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         Toast.makeText(SettingsActivity.this, "Profile Info Updated Successfully....", Toast.LENGTH_SHORT).show();
                         finish();

@@ -132,7 +132,7 @@ public class HomeActivity extends AppCompatActivity {
                 ) {
                     Toast.makeText(HomeActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                     Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
                 DrawerLayout drawer=findViewById(R.id.drawer_layout);
@@ -194,7 +194,7 @@ public class HomeActivity extends AppCompatActivity {
 
             {
                 Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
         }
     }

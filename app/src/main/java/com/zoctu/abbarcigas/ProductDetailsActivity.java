@@ -33,7 +33,7 @@ import java.util.HashMap;
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice, productDescription, productName;
-    private String productID="";
+    private String productID="",state="Normal";
     private Button addToCartButton;
 
     @Override
@@ -53,14 +53,33 @@ import java.util.HashMap;
 
         getProductDetails(productID);
 
-        addToCartButton.setOnClickListener(new View.OnClickListener() {
+        addToCartButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                addToCartList();
+            public void onClick(View v)
+            {
+
+                if (state.equals("Order Placed")  || state.equals("Order Shipped"))
+                {
+                    Toast.makeText(ProductDetailsActivity.this, "you can purchase more Gas, once your order is shipped or confirmed", Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    addToCartList();
+                }
             }
         });
 
     }
+
+     @Override
+     protected void onStart() {
+         super.onStart();
+         CheckOrderState();
+     }
+
+
+
 
      private void addToCartList()
      {
@@ -90,7 +109,8 @@ import java.util.HashMap;
                  if (task.isSuccessful())
                  {
                      cartListRef.child("Admin View").child(Prevalent.currentOnlineUsers.getPhone()).child("Products")
-                             .child(productID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                             .child(productID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
+                     {
                          @Override
                          public void onComplete(@NonNull Task<Void> task)
                          {
@@ -127,6 +147,38 @@ import java.util.HashMap;
 
              @Override
              public void onCancelled(@NonNull DatabaseError databaseError) {
+
+             }
+         });
+     }
+     private void CheckOrderState()
+     {
+         DatabaseReference orderRef;
+         orderRef=FirebaseDatabase.getInstance().getReference().child("Orders")
+                 .child(Prevalent.currentOnlineUsers.getPhone());
+         orderRef.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+             {
+                 if (dataSnapshot.exists())
+                 {
+                     String shippedState=dataSnapshot.child("state").getValue().toString();
+
+
+                     if (shippedState.equals("shipped"))
+                     {
+                         state="Orders Shipped";
+                     }
+                     else if (shippedState.equals("not shipped"))
+                     {
+                         state="Orders Placed";
+                        }
+                 }
+             }
+
+             @Override
+             public void onCancelled(@NonNull DatabaseError databaseError)
+             {
 
              }
          });

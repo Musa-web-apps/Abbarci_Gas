@@ -13,12 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="Add New Product"
         android:textAlignment="center"
         android:textSize="26sp"
         android:textStyle="bold"
-        />
+        android:textColor="@color/Red"
+        android:background="@drawable/input_design"
+        android:layout_margin="5dp"/>
 
     <LinearLayout
         android:id="@+id/linear1_category_layout"
@@ -28,7 +30,7 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/t_shirts"
@@ -57,6 +59,7 @@
             android:layout_marginEnd="15dp"
             android:src="@drawable/abbarcigas12kgfull" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linear2_category_layout"
         android:layout_width="match_parent"
@@ -65,7 +68,7 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/glasses"
@@ -92,6 +95,7 @@
             android:layout_height="110dp"
             android:src="@drawable/horsepipe" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linear3_category_layout"
         android:layout_width="match_parent"
@@ -100,7 +104,7 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/headphones_handsfree"
@@ -135,7 +139,7 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/cookers"
@@ -144,5 +148,34 @@
             android:src="@drawable/cooker"
             />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/check_orders_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/admin_logout_btn"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/input_design"
+        android:backgroundTint="@color/Green"
+        android:text="Check New Orders"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/admin_logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/input_design"
+        android:backgroundTint="@color/Green"
+        android:text="Logout"
+        android:textColor="@color/White"
+        android:textSize="20dp"
+        android:textAllCaps="false"/>
 
 </RelativeLayout>

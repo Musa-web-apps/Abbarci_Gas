@@ -21,8 +21,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.zoctu.abbarcigas.Model.Cart;
 import com.zoctu.abbarcigas.Prevalent.Prevalent;
 import com.zoctu.abbarcigas.ViewHolder.CartViewHolder;
@@ -32,7 +35,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
-    private TextView txtTotalAmount;
+    private TextView txtTotalAmount,txtMsg1;
     private int overTotalPrice=0;
 
     @Override
@@ -48,10 +51,12 @@ public class CartActivity extends AppCompatActivity {
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        txtMsg1=findViewById(R.id.msg1);
         NextProcessBtn=findViewById(R.id.next_process_btn);
         txtTotalAmount=findViewById(R.id.total_price);
 
-        NextProcessBtn.setOnClickListener(new View.OnClickListener() {
+        NextProcessBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
 
@@ -68,7 +73,10 @@ public class CartActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
-        txtTotalAmount.setText("Total Price = Ugx " + overTotalPrice);
+
+
+        txtTotalAmount.setText("Total Price = Ush " + overTotalPrice);
+
 
         final DatabaseReference cartListRef= FirebaseDatabase.getInstance().getReference().child("Cart List");
 
@@ -76,7 +84,8 @@ public class CartActivity extends AppCompatActivity {
                 .setQuery(cartListRef.child("User View").child(Prevalent.currentOnlineUsers.getPhone())
                 .child("Products"),Cart.class).build();
 
-        FirebaseRecyclerAdapter<Cart, CartViewHolder>adapter=new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
+        FirebaseRecyclerAdapter<Cart, CartViewHolder>adapter=new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options)
+        {
             @Override
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull final Cart model)
             {
@@ -85,21 +94,19 @@ public class CartActivity extends AppCompatActivity {
                 holder.txtProductPrice.setText("Price = " + model.getPrice() + "Ushs");
 
 
-                int oneTypeProductPrice=((Integer.valueOf(model.getPrice())))
-                        *Integer.valueOf(model.getQuantity());
+                int oneTypeProductPrice=((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
                 overTotalPrice=overTotalPrice + oneTypeProductPrice;
 
-                txtTotalAmount.setText("Total Price = Ugx " + overTotalPrice);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        CharSequence options[]=new CharSequence[]
+                        CharSequence[] options = new CharSequence[]
                                 {
-                                  "Edit",
-                                   "Remove"
+                                        "Edit",
+                                        "Remove"
                                 };
                         AlertDialog.Builder builder=new AlertDialog.Builder(CartActivity.this);
                         builder.setTitle("Cart Options:");
@@ -156,8 +163,59 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.startListening();
     }
+
+    private void CheckOrderState()
+    {
+        DatabaseReference orderRef;
+        orderRef=FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUsers.getPhone());
+        orderRef.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    String shippedState=dataSnapshot.child("state").getValue().toString();
+                    String userName=dataSnapshot.child("name").getValue().toString();
+
+                    if (shippedState.equals("shipped"))
+                    {
+                        txtTotalAmount.setText("Dear" + userName + "\n order is shipped successfully.");
+                        recyclerView.setVisibility(View.GONE);
+
+                        txtMsg1.setVisibility(View.VISIBLE);
+                        txtMsg1.setText("Congratulations Your Final Order Has Been Shipped Successfully Soon It Will Be At Your Door Step.");
+                        NextProcessBtn.setVisibility(View.GONE);
+
+                        Toast.makeText(CartActivity.this, "you can purchase more Gas, once your order is received or confirmed", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (shippedState.equals("not shipped"))
+                    {
+                        txtTotalAmount.setText("Shipping State = Not Shipped");
+                        recyclerView.setVisibility(View.GONE);
+
+                        txtMsg1.setVisibility(View.VISIBLE);
+                        NextProcessBtn.setVisibility(View.GONE);
+
+                        Toast.makeText(CartActivity.this, "you can purchase more Gas, once your order is received or confirmed", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         Intent intent=new Intent(CartActivity.this,HomeActivity.class);
-        startActivity(intent);}
+        startActivity(intent);
+    }
 }
+
+
+
