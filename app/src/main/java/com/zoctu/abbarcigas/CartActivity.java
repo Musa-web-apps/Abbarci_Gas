@@ -72,13 +72,13 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        CheckOrderState();
 
         final DatabaseReference cartListRef= FirebaseDatabase.getInstance().getReference().child("Cart List");
 
         FirebaseRecyclerOptions<Cart>options= new FirebaseRecyclerOptions.Builder<Cart>()
                 .setQuery(cartListRef.child("User View").child(Prevalent.currentOnlineUsers.getPhone())
                 .child("Products"),Cart.class).build();
-        txtTotalAmount.setText("Total Price = Ush " + overTotalPrice);
 
         FirebaseRecyclerAdapter<Cart, CartViewHolder>adapter=new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options)
         {
