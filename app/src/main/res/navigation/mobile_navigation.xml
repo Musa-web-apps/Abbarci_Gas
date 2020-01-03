@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_order"
-        android:name="com.zoctu.abbarcigas.ui.order.OrderFragment"
+        android:name="com.zoctu.abbarcigas.ui.search.OrderFragment"
         android:label="Order"
         tools:layout="@layout/fragment_order" />
 

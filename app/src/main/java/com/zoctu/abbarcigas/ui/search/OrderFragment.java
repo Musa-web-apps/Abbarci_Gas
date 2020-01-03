@@ -1,4 +1,4 @@
-package com.zoctu.abbarcigas.ui.order;
+package com.zoctu.abbarcigas.ui.search;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,16 +20,9 @@ public class OrderFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        orderViewModel =
-                ViewModelProviders.of(this).get(OrderViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_order, container, false);
-        final TextView textView = root.findViewById(R.id.text_order);
-        orderViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+
+
+
+        return null;
     }
 }

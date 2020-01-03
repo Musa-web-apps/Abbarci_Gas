@@ -35,32 +35,30 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button NextProcessBtn;
-    private TextView txtTotalAmount,txtMsg1;
-    private int overTotalPrice=0;
+    private TextView txtTotalAmount, txtMsg1;
+    private int overTotalPrice = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        recyclerView=findViewById(R.id.cart_list);
+        recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
-        layoutManager=new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        txtMsg1=findViewById(R.id.msg1);
-        NextProcessBtn=findViewById(R.id.next_process_btn);
-        txtTotalAmount=findViewById(R.id.total_price);
+        txtMsg1 = findViewById(R.id.msg1);
+        NextProcessBtn = findViewById(R.id.next_process_btn);
+        txtTotalAmount = findViewById(R.id.total_price);
 
-        NextProcessBtn.setOnClickListener(new View.OnClickListener()
-        {
+        NextProcessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 txtTotalAmount.setText("Total Price = Ush " + overTotalPrice);
 
-                Intent intent=new Intent(CartActivity.this,ConfirmFinalOrderActivity.class);
+                Intent intent = new Intent(CartActivity.this, ConfirmFinalOrderActivity.class);
                 intent.putExtra("Total Price", String.valueOf(overTotalPrice));
                 startActivity(intent);
                 finish();
@@ -73,12 +71,11 @@ public class CartActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         CheckOrderState();
-
         final DatabaseReference cartListRef= FirebaseDatabase.getInstance().getReference().child("Cart List");
 
         FirebaseRecyclerOptions<Cart>options= new FirebaseRecyclerOptions.Builder<Cart>()
                 .setQuery(cartListRef.child("User View").child(Prevalent.currentOnlineUsers.getPhone())
-                .child("Products"),Cart.class).build();
+                        .child("Products"),Cart.class).build();
 
         FirebaseRecyclerAdapter<Cart, CartViewHolder>adapter=new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options)
         {

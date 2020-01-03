@@ -1,4 +1,4 @@
-package com.zoctu.abbarcigas.ui.order;
+package com.zoctu.abbarcigas.ui.search;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

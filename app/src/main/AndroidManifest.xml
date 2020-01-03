@@ -32,7 +32,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
-        <activity android:name=".AdminUserProductActivity"></activity>
+        <activity android:name=".AdminMaintainProductsActivity"></activity>
+        <activity android:name=".SearchProductsActivity" />
+        <activity android:name=".AdminUserProductActivity" />
         <activity android:name=".AdminNewOrdersActivity" />
         <activity android:name=".ConfirmFinalOrderActivity" />
         <activity android:name=".CartActivity" />
