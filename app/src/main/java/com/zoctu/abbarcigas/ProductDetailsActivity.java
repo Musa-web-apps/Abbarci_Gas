@@ -75,7 +75,6 @@ import java.util.HashMap;
      @Override
      protected void onStart() {
          super.onStart();
-         CheckOrderState();
      }
 
 
@@ -85,9 +84,9 @@ import java.util.HashMap;
      {
          String saveCurrentTime,saveCurrentDate;
          Calendar callForDate = Calendar.getInstance();
-         SimpleDateFormat currentDate=new SimpleDateFormat("MMM dd, yyyy");
+         SimpleDateFormat currentDate=new SimpleDateFormat("dd MMM yyyy");
          saveCurrentDate=currentDate.format(callForDate.getTime());
-         SimpleDateFormat currentTime=new SimpleDateFormat("HH:mm:ss a");
+         SimpleDateFormat currentTime=new SimpleDateFormat(" hh:mm:ss a");
          saveCurrentTime=currentTime.format(callForDate.getTime());
 
          final DatabaseReference cartListRef=FirebaseDatabase.getInstance().getReference().child("Cart List");

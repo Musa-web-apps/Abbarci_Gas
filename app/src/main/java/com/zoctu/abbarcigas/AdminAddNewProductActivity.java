@@ -136,10 +136,10 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         loadingBar.show();
 
         Calendar calendar=Calendar.getInstance();
-        SimpleDateFormat currentDate=new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat currentDate=new SimpleDateFormat("dd MMM yyyy");
         saveCurrentDate=currentDate.format(calendar.getTime());
 
-        SimpleDateFormat currentTime=new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat currentTime=new SimpleDateFormat(" hh:mm:ss a");
         saveCurrentTime=currentTime.format(calendar.getTime());
 
         productRandomKey = saveCurrentDate + saveCurrentTime;

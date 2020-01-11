@@ -1,19 +1,19 @@
 package com.zoctu.abbarcigas.Model;
 
 public class Cart {
-    private String pid, pname,price,quantity,discount;
+    private String pid, pname, price, quantity, discount, time, date;
 
-    public Cart()
-    {
-
+    public Cart() {
     }
 
-    public Cart(String pid, String pname, String price, String quantity, String discount) {
+    public Cart(String pid, String pname, String price, String quantity, String discount, String time, String date) {
         this.pid = pid;
         this.pname = pname;
         this.price = price;
         this.quantity = quantity;
         this.discount = discount;
+        this.time = time;
+        this.date = date;
     }
 
     public String getPid() {
@@ -54,5 +54,21 @@ public class Cart {
 
     public void setDiscount(String discount) {
         this.discount = discount;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
