@@ -75,6 +75,8 @@ import java.util.HashMap;
      @Override
      protected void onStart() {
          super.onStart();
+
+         CheckOrderState();
      }
 
 
