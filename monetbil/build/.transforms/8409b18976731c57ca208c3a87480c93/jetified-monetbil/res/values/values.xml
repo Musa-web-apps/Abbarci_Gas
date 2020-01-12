@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cards_descriptiondefaulttextcolor">#727272</color>
+    <color name="cards_descriptiondefaulttextcolor1">#9E9E9E</color>
+    <color name="colorprimary">#00b0f0</color>
+    <color name="colorprimarydark">#0288D1</color>
+    <color name="windowBackground">#66000000</color>
+    <dimen name="containerWidth">318dp</dimen>
+    <dimen name="size_100dp">100dp</dimen>
+    <dimen name="size_128dp">128dp</dimen>
+    <dimen name="size_130dp">130dp</dimen>
+    <dimen name="size_160dp">160dp</dimen>
+    <dimen name="size_16dp">16dp</dimen>
+    <dimen name="size_192dp">192dp</dimen>
+    <dimen name="size_24dp">24dp</dimen>
+    <dimen name="size_300dp">300dp</dimen>
+    <dimen name="size_320dp">320dp</dimen>
+    <dimen name="size_32dp">32dp</dimen>
+    <dimen name="size_350dp">350dp</dimen>
+    <dimen name="size_36dp">36dp</dimen>
+    <dimen name="size_380dp">380dp</dimen>
+    <dimen name="size_480dp">480dp</dimen>
+    <dimen name="size_48dp">48dp</dimen>
+    <dimen name="size_60dp">60dp</dimen>
+    <dimen name="size_72dp">72dp</dimen>
+    <dimen name="size_96dp">96dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_medium">4dp</dimen>
+    <dimen name="spacing_middle">10dp</dimen>
+    <dimen name="spacing_mlarge">20dp</dimen>
+    <dimen name="spacing_mmedium">6dp</dimen>
+    <dimen name="spacing_mxlarge">25dp</dimen>
+    <dimen name="spacing_small">3dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+    <dimen name="spacing_xsmall">2dp</dimen>
+    <dimen name="spacing_xxsmall">1dp</dimen>
+    <string name="copied">Copied in the clipboard</string>
+    <string name="copy">Copy</string>
+    <string name="monetbil_gcm_defaultSenderId" translatable="false">735434989287</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="waiting_for_sms">Waiting for SMS...</string>
+    <style name="Theme_LightBlue_Transparent" parent="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+
+    </style>
+</resources>

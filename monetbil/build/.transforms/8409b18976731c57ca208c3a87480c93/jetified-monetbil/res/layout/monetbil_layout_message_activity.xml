@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2017 Serge NTONG
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    License
+
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="@dimen/containerWidth"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:isScrollContainer="true"
+        android:scrollbars="vertical"
+        android:scrollingCache="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/spacing_small"
+            android:paddingRight="@dimen/spacing_small">
+
+            <TextView
+                android:id="@+id/senderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:gravity="center"
+                android:text="sender"
+                android:textSize="12pt" />
+
+            <TextView
+                android:id="@+id/messageText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:gravity="center"
+                android:text="message" />
+
+            <EditText
+                android:id="@+id/valueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:gravity="center"
+                android:hint="value"
+                android:padding="10dp"
+                android:selectAllOnFocus="true"
+                android:textColor="@android:color/black"
+                android:textSize="12pt" />
+
+            <com.andexert.library.RippleView
+                android:id="@+id/btnCopy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/background_blue"
+                android:gravity="center"
+                android:minHeight="@dimen/size_48dp"
+                app:rv_centered="true"
+                app:rv_color="@android:color/black"
+                app:rv_rippleDuration="150"
+                app:rv_ripplePadding="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_middle"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle"
+                    android:paddingTop="@dimen/spacing_middle">
+
+                    <TextView
+                        android:id="@+id/btnCopyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_medium"
+                        android:maxLines="3"
+                        android:text="@string/copy"
+                        android:textAlignment="center"
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </com.andexert.library.RippleView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
